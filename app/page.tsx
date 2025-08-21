@@ -16,6 +16,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
+
 export default function MezArkWebsite() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0)
@@ -263,7 +264,7 @@ export default function MezArkWebsite() {
     return () => ctx.revert()
   }, [])
 
-  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
+  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement | null>) => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
@@ -423,13 +424,14 @@ export default function MezArkWebsite() {
             ].map((service, index) => (
               <Card
                 key={index}
-                className="gsap-scale overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border-amber-200"
+                className="gsap-scale overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-white border-amber-200 pt-0"
               >
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={service.image || "/placeholder.svg"}
                     alt={service.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    style={{ display: 'block' }}
                   />
                 </div>
                 <CardContent className="p-6">
@@ -510,68 +512,114 @@ export default function MezArkWebsite() {
         </div>
       </section>
 
-      <section ref={contactRef} className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-2xl">
-            {/* Left side - Image with overlay text */}
-            <div className="relative h-96 md:h-auto">
-              <img
-                src="/black-architects-consultation-meeting.png"
-                alt="MezArk team consultation"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
-              <div className="absolute inset-0 flex items-center justify-center p-8">
-                <div className="text-center text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: "Georgia, serif" }}>
-                    Get In Touch
-                  </h2>
-                  <p className="text-lg md:text-xl leading-relaxed">
-                    Ready to bring your architectural vision to life? Let's start the conversation.
-                  </p>
+      <section ref={contactRef} className="py-20 bg-slate-900 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/diverse-architecture-team-meeting.png"
+            alt="MezArk team consultation"
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-slate-900/60" />
+        </div>
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left side - Content */}
+            <div className="text-white ml-0 lg:ml-32 order-2 lg:order-1">
+              <p className="text-amber-400 font-medium mb-3 md:mb-4 text-sm md:text-base">Looking for architectural services?</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight" style={{ fontFamily: "Georgia, serif" }}>
+                We connect you with a{" "}
+                <span className="text-amber-400">local architect</span>
+              </h2>
+              <p className="text-lg md:text-xl text-slate-300 mb-6 md:mb-8 leading-relaxed">
+                Our friendly consultation services connect you with an
+                <span className="hidden md:inline"><br /></span>
+                <span className="md:hidden"> </span>
+                architect ready to help
+              </p>
+
+              {/* Service Selection Buttons */}
+              <div className="mb-6 md:mb-8">
+                <p className="text-white text-base md:text-lg mb-4 md:mb-6 border-l-4 border-amber-400 pl-3 md:pl-4">
+                  Choose the area of architecture you require:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Residential Design  
+                  </Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Commercial Architecture  
+                  </Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Sustainable Design  
+                  </Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Urban Planning  
+                  </Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Interior Design  
+                  </Button>
+                  <Button className="bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-none text-left justify-start text-sm md:text-base">
+                    Renovation Projects  
+                  </Button>
                 </div>
               </div>
             </div>
 
-            {/* Right side - Contact form */}
-            <div className="bg-white p-8 md:p-12">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-amber-600 mb-2">FREE CONSULTATION</h3>
-                <p className="text-slate-600">No obligation, it only takes a few minutes to get started!</p>
-              </div>
+            {/* Right side - Contact form card */}
+            <div className="relative mr-0 lg:mr-32 order-1 lg:order-2">
+              <Card className="bg-white border-0 shadow-2xl max-w-md lg:ml-auto mx-auto">
+                <CardContent className="p-6 md:p-8">
+                  <div className="mb-4 md:mb-6">
+                    <h3 className="text-xl md:text-2xl font-bold text-amber-600 mb-2">FREE CONSULTATION</h3>
+                    <p className="text-slate-600 text-sm md:text-base">No obligation, it only takes a few minutes to get started!</p>
+                  </div>
 
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-800">Name</label>
-                  <Input placeholder="Enter your name" className="border-amber-200 focus:border-amber-600" />
-                </div>
+                  <form className="space-y-4 md:space-y-5">
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-slate-800">Name</label>
+                      <Input 
+                        placeholder="Enter your name" 
+                        className="border-gray-300 focus:border-amber-600 focus:ring-amber-600 h-10 md:h-12 bg-gray-50" 
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-800">Email Address</label>
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="border-amber-200 focus:border-amber-600"
-                  />
-                </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-slate-800">Email Address</label>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        className="border-gray-300 focus:border-amber-600 focus:ring-amber-600 h-10 md:h-12 bg-gray-50"
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-800">Phone Number</label>
-                  <Input placeholder="Enter your phone number" className="border-amber-200 focus:border-amber-600" />
-                </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-slate-800">Phone Number</label>
+                      <Input 
+                        placeholder="Enter your phone number" 
+                        className="border-gray-300 focus:border-amber-600 focus:ring-amber-600 h-10 md:h-12 bg-gray-50" 
+                      />
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-800">Message</label>
-                  <Textarea
-                    placeholder="Write your project details"
-                    className="min-h-[120px] border-amber-200 focus:border-amber-600"
-                  />
-                </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-slate-800">Message</label>
+                      <Textarea
+                        placeholder="Describe your architectural project"
+                        className="min-h-[80px] md:min-h-[100px] border-gray-300 focus:border-amber-600 focus:ring-amber-600 bg-gray-50 resize-none"
+                      />
+                    </div>
 
-                <Button type="submit" size="lg" className="w-full bg-amber-600 hover:bg-amber-700 text-white">
-                  Submit →
-                </Button>
-              </form>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full bg-amber-800 hover:bg-amber-900 text-white h-10 md:h-12 rounded-none font-semibold"
+                    >
+                      Submit  
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
